@@ -35,7 +35,8 @@ setup: install-tools git-setup
 
 # 設定ファイルなどを取得してgit管理下に配置する
 .PHONY: get-conf
-get-conf: get-db-conf get-nginx-conf get-service-file get-envsh
+# get-conf: get-db-conf get-nginx-conf get-service-file get-envsh
+get-conf: get-db-conf get-nginx-conf
 
 # # リポジトリ内の設定ファイルをそれぞれ配置する
 # .PHONY: deploy-conf
@@ -96,18 +97,18 @@ git-setup:
 
 .PHONY: get-db-conf
 get-db-conf:
-	sudo cp -R $(DB_PATH)/* ~/$(SERVER_ID)/etc/mysql
-	sudo chown $(USER) -R ~/$(SERVER_ID)/etc/mysql
+	sudo cp -R $(DB_PATH)/* ./etc/mysql
+	sudo chown $(USER) -R ./etc/mysql
 
 .PHONY: get-nginx-conf
 get-nginx-conf:
-	sudo cp -R $(NGINX_PATH)/* ~/$(SERVER_ID)/etc/nginx
-	sudo chown $(USER) -R ~/$(SERVER_ID)/etc/nginx
+	sudo cp -R $(NGINX_PATH)/* ./etc/nginx
+	sudo chown $(USER) -R ./etc/nginx
 
-.PHONY: get-service-file
-get-service-file:
-	sudo cp $(SYSTEMD_PATH)/$(SERVICE_NAME) ~/$(SERVER_ID)/etc/systemd/system/$(SERVICE_NAME)
-	sudo chown $(USER) ~/$(SERVER_ID)/etc/systemd/system/$(SERVICE_NAME)
+# .PHONY: get-service-file
+# get-service-file:
+# 	sudo cp $(SYSTEMD_PATH)/$(SERVICE_NAME) ~/etc/systemd/system/$(SERVICE_NAME)
+# 	sudo chown $(USER) ~/etc/systemd/system/$(SERVICE_NAME)
 
 .PHONY: get-envsh
 get-envsh:
@@ -153,3 +154,9 @@ mv-logs:
 .PHONY: watch-service-log
 watch-service-log:
 	sudo journalctl -u $(SERVICE_NAME) -n10 -f
+
+.PHONY: deploy
+deploy: get-conf
+	sudo rm /var/log/nginx/access.log
+	sudo touch /var/log/nginx/access.log
+	curl https://xnvvb925bl.execute-api.ap-northeast-1.amazonaws.com/
