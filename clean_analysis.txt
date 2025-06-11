@@ -1,0 +1,2555 @@
+
+# 41.4s user time, 110ms system time, 33.75M rss, 39.39M vsz
+# Current date: Wed Jun 11 14:03:33 2025
+# Hostname: ip-172-31-15-198
+# Files: clean_slow.log
+# Overall: 1.08M total, 303 unique, 405.20 QPS, 0.07x concurrency ________
+# Time range: 2025-06-11T04:17:25 to 2025-06-11T05:01:39
+# Attribute          total     min     max     avg     95%  stddev  median
+# ============     ======= ======= ======= ======= ======= ======= =======
+# Exec time           183s     1us   108ms   169us   119us     2ms    26us
+# Lock time          309ms       0     2ms       0     1us     5us       0
+# Rows sent         31.02M       0   9.87k   30.24    0.99  536.37       0
+# Rows examine     130.37M       0  97.80k  127.11    0.99   2.53k       0
+# Query size        44.03M       0  18.62k   42.92   80.10  245.80   31.70
+
+# Profile
+# Rank Query ID                            Response time Calls  R/Call V/M
+# ==== =================================== ============= ====== ====== ===
+#    1 0x4858CF4D8CAA743E839C127C71B69E75  85.9197 47.0%   2748 0.0313  0.01 SELECT posts
+#    2 0x7A12D0C8F433684C3027353C36CAB572  17.9820  9.8%    458 0.0393  0.01 SELECT posts
+#    3 0xDA556F9115773A1A99AA0165670CE848  13.5728  7.4% 352809 0.0000  0.00 ADMIN PREPARE
+#    4 0x19759A5557089FD5B718D440CBBB5C55  12.4771  6.8%  34654 0.0004  0.00 SELECT posts
+#    5 0xCDEB1AFF2AE2BE51B2ED5CF03D4E749F  11.3310  6.2%    595 0.0190  0.01 SELECT comments
+#    6 0x396201721CD58410E070DA9421CA8C8D  10.6300  5.8% 164285 0.0001  0.00 SELECT users
+#    7 0x624863D30DAC59FA16849282195BE09F   6.2370  3.4%  70925 0.0001  0.00 SELECT comments
+#    8 0x422390B42D4DD86C7539A5F45EB76A80   5.4995  3.0%  73445 0.0001  0.00 SELECT comments
+#    9 0xE83DA93257C7B787C67B1B05D2469241   5.0350  2.8%    595 0.0085  0.00 SELECT posts
+#   10 0x26489ECBE26887E480CA8067F971EA04   2.7862  1.5%    406 0.0069  0.00 INSERT users
+#   11 0xC9383ACA6FF14C29E819735F00B6DBDF   1.0652  0.6%    595 0.0018  0.00 SELECT posts
+#   12 0x9F2038550F51B0A3AB05CA526E3FEDDC   0.9560  0.5%    122 0.0078  0.00 INSERT comments
+#   13 0xA4DEA7F7D872DC6F1EA5E26A0E70DBFD   0.9011  0.5%     70 0.0129  0.00 INSERT posts
+# MISC 0xMISC                               8.2331  4.5% 373697 0.0000   0.0 <290 ITEMS>
+
+# Query 1: 1.04 QPS, 0.03x concurrency, ID 0x4858CF4D8CAA743E839C127C71B69E75 at byte 248204080
+# This item is included in the report because it matches --limit.
+# Scores: V/M = 0.01
+# Time range: 2025-06-11T04:17:25 to 2025-06-11T05:01:37
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0    2748
+# Exec time     47     86s    10ms    95ms    31ms    59ms    13ms    28ms
+# Lock time      1     4ms       0   567us     1us     1us    12us     1us
+# Rows sent     84  26.34M   9.77k   9.87k   9.81k   9.80k   51.50   9.80k
+# Rows examine  40  52.68M  19.53k  19.73k  19.63k  19.40k       0  19.40k
+# Query size     0 246.89k      92      92      92      92       0      92
+# String:
+# Databases    isuconp
+# Hosts        localhost
+# Users        isuconp
+# Query_time distribution
+#   1us
+#  10us
+# 100us
+#   1ms
+#  10ms  ################################################################
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isuconp` LIKE 'posts'\G
+#    SHOW CREATE TABLE `isuconp`.`posts`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT `id`, `user_id`, `body`, `mime`, `created_at` FROM `posts` ORDER BY `created_at` DESC\G
+
+# Query 2: 0.17 QPS, 0.01x concurrency, ID 0x7A12D0C8F433684C3027353C36CAB572 at byte 251990344
+# This item is included in the report because it matches --limit.
+# Scores: V/M = 0.01
+# Time range: 2025-06-11T04:17:27 to 2025-06-11T05:01:39
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0     458
+# Exec time      9     18s    13ms   108ms    39ms    71ms    16ms    36ms
+# Lock time      0     1ms       0   875us     2us     1us    39us     1us
+# Rows sent     13   4.32M   9.57k   9.76k   9.66k   9.33k    0.00   9.33k
+# Rows examine   6   8.71M  19.35k  19.61k  19.48k  19.40k     134  19.40k
+# Query size     0  63.51k     142     142     142     142       0     142
+# String:
+# Databases    isuconp
+# Hosts        localhost
+# Users        isuconp
+# Query_time distribution
+#   1us
+#  10us
+# 100us
+#   1ms
+#  10ms  ################################################################
+# 100ms  #
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isuconp` LIKE 'posts'\G
+#    SHOW CREATE TABLE `isuconp`.`posts`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT `id`, `user_id`, `body`, `mime`, `created_at` FROM `posts` WHERE `created_at` <= '2016-01-02T11:46:22+09:00' ORDER BY `created_at` DESC\G
+
+# Query 3: 132.93 QPS, 0.01x concurrency, ID 0xDA556F9115773A1A99AA0165670CE848 at byte 259075467
+# This item is included in the report because it matches --limit.
+# Scores: V/M = 0.00
+# Time range: 2025-06-11T04:17:25 to 2025-06-11T05:01:39
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count         32  352809
+# Exec time      7     14s    10us     7ms    38us    73us    74us    27us
+# Lock time      0       0       0       0       0       0       0       0
+# Rows sent      0       0       0       0       0       0       0       0
+# Rows examine   0       0       0       0       0       0       0       0
+# Query size    22  10.10M      30      30      30      30       0      30
+# String:
+# Databases    isuconp
+# Hosts        localhost
+# Users        isuconp
+# Query_time distribution
+#   1us
+#  10us  ################################################################
+# 100us  ##
+#   1ms  #
+#  10ms
+# 100ms
+#    1s
+#  10s+
+administrator command: Prepare\G
+
+# Query 4: 13.06 QPS, 0.00x concurrency, ID 0x19759A5557089FD5B718D440CBBB5C55 at byte 260118751
+# This item is included in the report because it matches --limit.
+# Scores: V/M = 0.00
+# Time range: 2025-06-11T04:17:25 to 2025-06-11T05:01:39
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          3   34654
+# Exec time      6     12s    54us    21ms   360us     2ms   826us   113us
+# Lock time     14    43ms       0   797us     1us     1us     9us     1us
+# Rows sent      0  33.84k       0       1    1.00    0.99    0.01    0.99
+# Rows examine   0  33.84k       0       1    1.00    0.99    0.01    0.99
+# Query size     2   1.31M      36      40   39.50   38.53    0.24   38.53
+# String:
+# Databases    isuconp
+# Hosts        localhost
+# Users        isuconp
+# Query_time distribution
+#   1us
+#  10us  ###################
+# 100us  ################################################################
+#   1ms  ######
+#  10ms  #
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isuconp` LIKE 'posts'\G
+#    SHOW CREATE TABLE `isuconp`.`posts`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT * FROM `posts` WHERE `id` = 5794\G
+
+# Query 5: 0.22 QPS, 0.00x concurrency, ID 0xCDEB1AFF2AE2BE51B2ED5CF03D4E749F at byte 251371685
+# This item is included in the report because it matches --limit.
+# Scores: V/M = 0.01
+# Time range: 2025-06-11T04:17:25 to 2025-06-11T05:01:35
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0     595
+# Exec time      6     11s    11ms    90ms    19ms    56ms    14ms    13ms
+# Lock time      0   382us       0    15us       0     1us       0     1us
+# Rows sent      0     595       1       1       1       1       0       1
+# Rows examine  43  56.78M  97.66k  97.80k  97.72k  97.04k       0  97.04k
+# Query size     0  35.99k      61      62   61.94   59.77       0   59.77
+# String:
+# Databases    isuconp
+# Hosts        localhost
+# Users        isuconp
+# Query_time distribution
+#   1us
+#  10us
+# 100us
+#   1ms
+#  10ms  ################################################################
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isuconp` LIKE 'comments'\G
+#    SHOW CREATE TABLE `isuconp`.`comments`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT COUNT(*) AS count FROM `comments` WHERE `user_id` = 708\G
+
+# Query 6: 61.90 QPS, 0.00x concurrency, ID 0x396201721CD58410E070DA9421CA8C8D at byte 255476926
+# This item is included in the report because it matches --limit.
+# Scores: V/M = 0.00
+# Time range: 2025-06-11T04:17:25 to 2025-06-11T05:01:39
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count         15  164285
+# Exec time      5     11s    15us    16ms    64us   131us   184us    40us
+# Lock time     41   129ms       0     1ms       0     1us     6us     1us
+# Rows sent      0 160.43k       0       1    1.00    0.99    0.00    0.99
+# Rows examine   0 160.43k       0       1    1.00    0.99    0.00    0.99
+# Query size    13   5.94M      36      39   37.90   36.69    0.17   36.69
+# String:
+# Databases    isuconp
+# Hosts        localhost
+# Users        isuconp
+# Query_time distribution
+#   1us
+#  10us  ################################################################
+# 100us  ####
+#   1ms  #
+#  10ms  #
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isuconp` LIKE 'users'\G
+#    SHOW CREATE TABLE `isuconp`.`users`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT * FROM `users` WHERE `id` = 383\G
+
+# Query 7: 26.72 QPS, 0.00x concurrency, ID 0x624863D30DAC59FA16849282195BE09F at byte 255459495
+# This item is included in the report because it matches --limit.
+# Scores: V/M = 0.00
+# Time range: 2025-06-11T04:17:25 to 2025-06-11T05:01:39
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          6   70925
+# Exec time      3      6s    28us    16ms    87us   176us   167us    60us
+# Lock time     17    55ms       0     2ms       0     1us     7us     1us
+# Rows sent      0  62.34k       0       3    0.90    2.90    1.32       0
+# Rows examine   0 268.05k       0      26    3.87   15.25    6.01       0
+# Query size    12   5.59M      79      83   82.70   80.10    0.11   80.10
+# String:
+# Databases    isuconp
+# Hosts        localhost
+# Users        isuconp
+# Query_time distribution
+#   1us
+#  10us  ################################################################
+# 100us  #############
+#   1ms  #
+#  10ms  #
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isuconp` LIKE 'comments'\G
+#    SHOW CREATE TABLE `isuconp`.`comments`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT * FROM `comments` WHERE `post_id` = 9935 ORDER BY `created_at` DESC LIMIT 3\G
+
+# Query 8: 27.67 QPS, 0.00x concurrency, ID 0x422390B42D4DD86C7539A5F45EB76A80 at byte 85740574
+# This item is included in the report because it matches --limit.
+# Scores: V/M = 0.00
+# Time range: 2025-06-11T04:17:25 to 2025-06-11T05:01:39
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          6   73445
+# Exec time      3      5s    24us     6ms    74us   152us    99us    54us
+# Lock time     20    65ms       0     2ms       0     1us    12us     1us
+# Rows sent      0  71.72k       1       1       1       1       0       1
+# Rows examine   0 227.62k       0      23    3.17   12.54    4.87       0
+# Query size    10   4.60M      62      66   65.68   65.89    1.45   65.89
+# String:
+# Databases    isuconp
+# Hosts        localhost
+# Users        isuconp
+# Query_time distribution
+#   1us
+#  10us  ################################################################
+# 100us  ########
+#   1ms  #
+#  10ms
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isuconp` LIKE 'comments'\G
+#    SHOW CREATE TABLE `isuconp`.`comments`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT COUNT(*) AS `count` FROM `comments` WHERE `post_id` = 8503\G
+
+# Query 9: 0.22 QPS, 0.00x concurrency, ID 0xE83DA93257C7B787C67B1B05D2469241 at byte 255469725
+# This item is included in the report because it matches --limit.
+# Scores: V/M = 0.00
+# Time range: 2025-06-11T04:17:25 to 2025-06-11T05:01:35
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0     595
+# Exec time      2      5s     3ms    30ms     8ms    16ms     4ms     8ms
+# Lock time      0     1ms       0   788us     2us     1us    31us     1us
+# Rows sent      0   5.81k       2      21    9.99   15.25    3.09    9.83
+# Rows examine   4   5.71M   9.77k   9.88k   9.82k   9.80k      55   9.80k
+# Query size     0  66.20k     113     114  113.94  112.70       0  112.70
+# String:
+# Databases    isuconp
+# Hosts        localhost
+# Users        isuconp
+# Query_time distribution
+#   1us
+#  10us
+# 100us
+#   1ms  ################################################################
+#  10ms  ##############################
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isuconp` LIKE 'posts'\G
+#    SHOW CREATE TABLE `isuconp`.`posts`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT `id`, `user_id`, `body`, `mime`, `created_at` FROM `posts` WHERE `user_id` = 22 ORDER BY `created_at` DESC\G
+
+# Query 10: 0.15 QPS, 0.00x concurrency, ID 0x26489ECBE26887E480CA8067F971EA04 at byte 254605339
+# This item is included in the report because it matches --limit.
+# Scores: V/M = 0.00
+# Time range: 2025-06-11T04:17:26 to 2025-06-11T05:01:35
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0     406
+# Exec time      1      3s     2ms    13ms     7ms     9ms     1ms     7ms
+# Lock time      0   468us       0    22us     1us     1us     1us     1us
+# Rows sent      0       0       0       0       0       0       0       0
+# Rows examine   0       0       0       0       0       0       0       0
+# Query size     0  85.64k     216     216     216     216       0     216
+# String:
+# Databases    isuconp
+# Hosts        localhost
+# Users        isuconp
+# Query_time distribution
+#   1us
+#  10us
+# 100us
+#   1ms  ################################################################
+#  10ms  #
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isuconp` LIKE 'users'\G
+#    SHOW CREATE TABLE `isuconp`.`users`\G
+INSERT INTO `users` (`account_name`, `passhash`) VALUES ('TZez0QvI22nBUNjAtDdo0Su2B','6374014e499e56da3f0529648413c00558d0b30af2030ec7ae7ffb2b23f8b6997bbdfc9a45ed151f3f1d2151457c69389508c507379b0a398664973dca430bad')\G
+
+# Query 11: 0.22 QPS, 0.00x concurrency, ID 0xC9383ACA6FF14C29E819735F00B6DBDF at byte 247333823
+# This item is included in the report because it matches --limit.
+# Scores: V/M = 0.00
+# Time range: 2025-06-11T04:17:25 to 2025-06-11T05:01:35
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0     595
+# Exec time      0      1s     1ms    11ms     2ms     4ms     1ms     1ms
+# Lock time      0   674us       0    47us     1us     1us     2us     1us
+# Rows sent      0   5.81k       2      21    9.99   15.25    3.09    9.83
+# Rows examine   4   5.70M   9.77k   9.87k   9.81k   9.80k   51.50   9.80k
+# Query size     0  26.69k      45      46   45.94   44.60       0   44.60
+# String:
+# Databases    isuconp
+# Hosts        localhost
+# Users        isuconp
+# Query_time distribution
+#   1us
+#  10us
+# 100us
+#   1ms  ################################################################
+#  10ms  #
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isuconp` LIKE 'posts'\G
+#    SHOW CREATE TABLE `isuconp`.`posts`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT `id` FROM `posts` WHERE `user_id` = 359\G
+
+# Query 12: 0.05 QPS, 0.00x concurrency, ID 0x9F2038550F51B0A3AB05CA526E3FEDDC at byte 113291334
+# This item is included in the report because it matches --limit.
+# Scores: V/M = 0.00
+# Time range: 2025-06-11T04:17:27 to 2025-06-11T05:01:33
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0     122
+# Exec time      0   956ms     2ms    14ms     8ms    11ms     2ms     8ms
+# Lock time      0   112us       0     6us       0     1us       0     1us
+# Rows sent      0       0       0       0       0       0       0       0
+# Rows examine   0       0       0       0       0       0       0       0
+# Query size     0  10.24k      78     110   85.93   97.36    7.26   80.10
+# String:
+# Databases    isuconp
+# Hosts        localhost
+# Users        isuconp
+# Query_time distribution
+#   1us
+#  10us
+# 100us
+#   1ms  ################################################################
+#  10ms  ##########
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isuconp` LIKE 'comments'\G
+#    SHOW CREATE TABLE `isuconp`.`comments`\G
+INSERT INTO `comments` (`post_id`, `user_id`, `comment`) VALUES (7882,934,'.
+^;+.
+.')\G
+
+# Query 13: 0.03 QPS, 0.00x concurrency, ID 0xA4DEA7F7D872DC6F1EA5E26A0E70DBFD at byte 256055705
+# This item is included in the report because it matches --limit.
+# Scores: V/M = 0.00
+# Time range: 2025-06-11T04:17:34 to 2025-06-11T05:01:35
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0      70
+# Exec time      0   901ms     5ms    21ms    13ms    17ms     3ms    13ms
+# Lock time      0    67us       0     2us       0     1us       0     1us
+# Rows sent      0       0       0       0       0       0       0       0
+# Rows examine   0       0       0       0       0       0       0       0
+# Query size     1 856.87k  12.11k  12.41k  12.24k  11.91k       0  11.91k
+# String:
+# Databases    isuconp
+# Hosts        localhost
+# Users        isuconp
+# Query_time distribution
+#   1us
+#  10us
+# 100us
+#   1ms  ##########
+#  10ms  ################################################################
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isuconp` LIKE 'posts'\G
+#    SHOW CREATE TABLE `isuconp`.`posts`\G
+INSERT INTO `posts` (`user_id`, `mime`, `imgdata`, `body`) VALUES (399,'image/jpeg','
+JFIF\0
+\0\0
+\0\0
+\0C\0
+ $.\' \",#
+(7),01444
+\'9=82<.342
+\r\r
+!22222222222222222222222222222222222222222222222222
+\"\0
+\0\0
+\0\0\0\0\0\0\0\0\0
+\"a2q
+\0\Z
+\0\0\0\0\0\0\0\0\0\0\0
+\0\0\0
+\"a2
+\0?\0\
+9QM$
+E\ZSJE\
+)F\rB
+4uuIpl\
+mn\\
+U\\\
+h~Vl
+/u4,sN-ej4`\
+iwP\0
+ \ZL3
+W!mG
+oeM\
+q\r;J
+\ZQ\
+/<#E
+k\nM!p\
+w]/Dt
+-\ZAt\
+\'9Xw\
+7!*\
+V.(d
+G\nCA\"\
+a\"\
+dE/-
+UNg\
+PYR9\
+-S]F\
+l\Z\
+6[9)
+,*<Q
+]\\\
+JTm\
+{G*\
+ >!K
+-ht\rea]
+,\'X
+\Z\r%d
+4*9\
+Q8cH
+e6c\
+jC@\
+?\0lT8S
+w\nh^
+{\\J\
+	]vUP
+\\Ep
+\0yV
+	\rP
+M\Z\\8
+@uav)q\
+\Zr_
+\'|F
+H=F\
+$a,Ia\
+#6;m
+hU\"
+aR6P
+ZbE\
+)wIh%
+\'IVmr
+A7ic&AWl
+P0-O\
+;ZD\
++R.\
+h%,\
+V~E.
+[yOj#
+Roqq\
+)r\n
+\ZR\
+@py<\'
+h<&,
+A1b\
+V]P\"
+y(%\
+\ZI\
+q\'%,
+|D]!
+mY#?)b\
++OI\
+ry+r
+V#69V
+jhvH
+p\nAA\"
+#\n\0
+<+aT
+|.h\
+,\r.T
+u8\\[k
+P_*L
+z_QH
+KNra\
+=ijzy
+#>shFK*:
+5aWi/
+q%7\
+Wjp\
+ME!&
+\\y/OiR
+\Zh%
+Y4mk
+0\n%\n\
+uC!\
+}wj\
+<	\r	(
+IU.]z\
+-G]C
+4YYz\
+H^rV=_-\'+\
+-)?N
+\Zyg~
+,\'\
++Y16
+(\r*v
+0\0SEp
+I8\n
+M\ZO	
+*	\\
+\0S\
+\0e\\
+\"4\0)O
+\"BB9
+yKD2
+P\r\
+}\Z\nZ\
+\ZgQd\
+X~\'
+do-6\nj=s
+9[q\
+;)C\
+j\'\
+\0G\
+\0h5I
+a54\
+\ZMG
+\Zq\
+BLIE
+cF)Z\
+DM.*pj\
+2yME:
+xZ^y
+h\Z\
+\0d\
+kZWW\
+\nSU
+;WfCQ@\
+ l2?\
+\rZpt\
+?i<-}?Kk
+*\'rL
+K>n\
+H?uV
+j@ \
+MaH\
+5\0Z
+B,:\
+\' qU?
+Kri\\
+NGt3
+LwP*&\
+cR9I!;
+O&FV
+dGFDx\
+{xUc\
+J+MeQ\
+u:r-\"\
+Ni_9*
+f:QaX8`
+0\nw\
+^\n\
+SxZs\
+JV\r#
+Gj\r
+4:oR\
+`N`A
+fJGt
+&+\Z-}
+kE\Z
++N~B
+NZ\0\\\
+Kcs\
+\ri%<
+p\0U
+;(]\
+nI?RIE
+\0m\'.
+`,/W\
+SJ~\
+\n**
+ eO\
+%`r\
+\n]\
+\'HJ
+l :Q\
+\\0Q\
+U$Z\\
+}wY\
+\\N0
+,\n]#\\,RT\
+I!h\
+c\Z,
+m*gU3_u
+nlT\
+U}q\
+NzM\
+cZ=g\
+w}T^L
+n3yI9
+8Xw\
+Uq4U
+!k~Q
+Gc	\
+[|R\
+< :ZZ
+TkKFU\
+g9R\
+y+I\
+\n6\
+^EZ\
+gOk\
+h44aAu*
+po)w\
+jH86
+)q)\\
+Ot\':
+\0+\
+V7VJjx
+7FF*\
+\\*\
+s<nJ
+*;(\
+YU\'*M.u
+\0mx\
+RRwZ\\\
+Zio\
+TR&Rmpy\
+\0(\
+0`)P_G
+c+K\
+\";\
+%~/\ZZ
+\0PR\
+	\ZJ\
+Oev\
+:d7\n\
+XYd\
+5\0\
+\0P-vN
+	WNr
+wWl\
+b/\'
+Q)&8
+=W=\'
+ii8O
+Os;|.
+\0f_\'?\
+.$*~_
+N/a^\'\0\
+m*<emj0
+NziY]\
+rFdg	Q1\
+).Vs
+d	\"
+sLROp\
+\n;O
+RNMQ9
+RjCl
+.%Z\
+qh.\"
+PT\'
+p$5wu9\
+M\"&
+c9	^
+}\"\
+\\(eU
+\0m>\
+)0N\
+`\'\n
+iz{\
+X44*I \0
+JjNI~W/\
+\'a9*
+O%M\
+_\\\Z
+#%M\
+CqW(n\n\
+Wt\"
+8N\'\
+LkA)
+yMi\
+Vhu\
+%VV^
+<::+\"9x
+4mp8Y\
+DZl\'
+Rt|\
+9e,2\
+UM,<\
+(h{\
+c-6V
+SyY\
+PN:Z
+)3}PAS\
+jvMe6
+T;<\
+88RF
+{H&\
+fB^A\
+\"cX8
+	u`^RO\
+NyDh=\
+rRm6]<
+4\\h
+)w<wP
+P\\\
+Gk+2Ao
+o\\}\
+]\"s
+P=B\r,
+@[JC\
+6\"\
+-rV\
+\\	)\
+U\"p\
+<Z+]d
+9NE #
+P9Gd
+%xA\
+H;d\
+iE$p
+e\r\
+ )I\\\Zn\
+@Gupm(
+q%i<
+\0S\
+k`ct
+\0,/V
+nBR\r
+\"o\
+\0*=
+\"YTs
+mh$,\
+\0NW/}y9
+>\\W(RL
+w<\'\
+m$4\
+MZs1
+!\'%34
+8Bs\
+\"k+O@\
+\rQ\
+qHM8\
+#NB\
+acu^
+\nr\
+>kv\n
+?fSt
+Sn\r
+m\ZU\
+o+Q\
+\\%zM
+YCi 
+=Oo*
+`\0R\
+GSs]
+X\'-	5$
+Y:Y\
+]!=\
+V\rU8
+pR\Z\
+8\r\
+;N{&\
+-IbkX
+Z/5G\
+w$O\
+J[e\
+M;^p
+E\\2
+	4OSm\
+Om\'\":O=
+^|.~
+9A%\
+0Szm#\
+NH_\
+\ns\
+d-\'
+LP\0*
+dT(#\
+![fr
+.q\rTt
+\"sR\
+[\Zs
+O{Y.\
+,rI\\
+wyTt
+:7x*
+gy6\
+CxA)
+2KA\'$
+_\"\
+ZcC\0
+hN	i
+i\rC
+(@%<\
+9ZP\
+:8C0
+UE#)1
+`{IDO\\
+V\Z&
+20X>
+m4Q\Z\
+Tmji\
+Kf93\
+UJ=6
+\0Bt
+QXu\
+x)i&
+_1q-
+S,~9J\
+(IU$\
+xJAc\
+U\"i\
+\\q\
+G9Y\
+}rV=
+-\n\
+Fb[]
+KZdp
+@\\A![G
+%}Q\
+FkD<|) 
+ g\n\
+-t.h\
+VBj(X\
+2P^\
+\0k\
+\0\r\
+ \0]%$
+Bg\0*
+\0qJ
+\r\'4
+\'\\3HRGMJ
+\'9Y
+4Zv)
+VCX\
+cl<8&!s
+Q}La
+,}|?\
+x\\d
+?e?O&\
+={_\
+N6\\
+?t[H
+@I\r+&
+x_H\
+;O!v\
+kN{\
+jA6\
+4gq\
+W\r<wVsqj\
+-oto
+Y=_V\
+Wi%kC
+dYT|
+r\Z!
+Gl!\
+OC\'
+R\re?
+Z (t~\
+[!G\
+O\\4r
+eGj\0J?R
+\'\'$\
+\Z@v
+\Z$gr\
+X36X
+JkO1
+\Z@$x\
+\ZFx]
+RB2\
+)mGM\r
+oe?\'
+Z+Fh
+\'P\
+\08\
+OLpR
+mW*Ap\r)w<
+iS-\
+\nS\
+jGR\
+q9^by
+A;dp\'
+@xNF\
+pH3\
+3;m\
+n9MJ\
+SL\0\Z
+x	\'
+!k9\
+y\"~\
+VQ@ *
+\"1z
+8P5\
+O2\"
+]:![\\@
+#3R`
+P\0\r\"G\'
+ZCS\
+-pAW|
+I8X]CM
+-%T\
+WttH*
+J<L$\
+Km\\T
+%KB)
+ahC(#
+X\ryi
+O\\\
+hi5\
+-` \
+%[0$e
+q.8S\
+\\M-i1w\
+s_`\
+\'8\
+XW|-kN
+;mnU
+m~<-
+ca Q\
+\0Z_m;
+h6B\
+u&T^&\
+i(O!
+w%9q
+Q`T9
+J:`$\n
+\\r\r
+Yt0r
+KI)\"
+6yi)idY:\
+C)I:|
+{PK\
+AN\Z
+WiEa
+	IL\
+N^J;
+Ao*b
+?l?k\
+`)T\
+B\0Th
+%s&-
+Q,Nc
+h$ed\
+_*a\
+B1k.
++SY\
+J3O\
+kn0\
+N-%\
+]3XG&
+?v{4
+hV?t\
+d&\"
+O+(\Z
+5xS(m
+lsG	
+$+<\
+iA	y
+GW|F6
+\0\r%\
+n^cA#
+h({r@D
+HnuZ\
+	r|\
+5W]\
+b-a\
+\Z9n6
+\Z\rYR\
+1}6yQ
+Xb3\
+Q	&r
+Iiu\
+)GL2
+J7X4
+aAu\
+4w\0
++0u(\
+Se<h
+DjA<
+=B\n[\
+h9u-
+\'!).
+d\'(
+=*d\
+XjV4FH6
+1kj\
+_&_*\
+p! \
+\0Z\
+CtU6
+AG\\\
+\r}wDc\
+KiOYk^&3n
+u\'\
+	G1>3N
+)mC\
+[\ZX\
+\\\0W\
+\'3@
+.ufOqy
+7H^r\
+B/Q2.
+3/Np
+#ZN0
+R`x*
+u GC
+yXwv
+Ddw	
+S{{\"
+\n/d
+wjQc
+K/Y1
+$X)7
+\0N\
+^Q:*!.
+!\\\
+sHma
+hY(-q
+\\M :\"M
+h\r)Xr
+.k\\\
+Sfy?4v
+qKB],:V
+%\nI(p
+	%+,
+s[kY
+R]{\ZpmgO
+=/Qy
+))uR
+Z,elG
+kA+	\
+]6\\
+\rBy\0
+OmX\
+\\KC
+nw({
+\ZFa
+C,-8\
+@vV]y
+PR-z;d\
+Zx}F\Z\
+@m$f\
+8NM\
+\0m\
+W\"KC
+uht\
+Bm>\
+\rl\
+J>?\
+S0Fc
+W.2\
+f)N\
+)\'h
+Rl%\
+OsQ}
+\rC\
+|({-
+W*uD4r
+}pV=F
+#(\n
+\Z;&
+\0J#c
+@q$R\
+uX>\
+SFePT
+U\r\
+z\'1
+*E\\
+_mi!\
++\0\
+Nb:]
+\0n\
+>yrE
+\Z>Vt
+pUXE_
+*;Ka<\
+\nK7b
+?N\Z
+u6Z	
++RGo9
+o v\n
+,!j4
+aey\
+i{FW>CYD\
+\r2L
+{NyL\
+k^/\
+\"3\\<
+yY\Zcyj{A\
+c^|-
+>SQ5\
+A$M- \
+y95\
+t-9\
+|xO\
+?Q?u
+[z(\
+\nm\
+}Sl 5
+J]g|T
+4}\\
++!D`
+N\"a
+[AS\
++B9\
+G]HJ
+aF?B
+6{\\
+\n9\
+G\0.
+YAIweZ\
+9RX\
+\ZJ\
+@yhm\
+Uu2&-$
+k^`Z
+wuC\"\
++[G),
+(WHr
+^_U \
+=GN^\
+ZE+1\
+(n8D
+ a99\
+FV}\
+kkM#
+Gw	(\r
+](lU
+>o?\
+\0\ZI
+K\'d
+#P$\
+o>SL
+S[h%\
+VaG9
+D\Zi
+u\rcca\0\
+PV\rZXU
+\n\'
+jDm#i%gJn\
+U;b++C
+4b-8
+5++\
+-T3?s
+S,cd
+[YPO+Iq
+P9Xu\
+h.v\0
+^8N\
+XdZTJ;
+]\'kY
+-8C2Q
+\0\no
+~4cw
+\n)(\Z
+\Z\\\
+B+Z\
+Mi`.\
+\0$\
+G\n\
+eHr#\Z.\
+X\Z\
+I\n]
+xduh
+v	=L
+\'?kH
+\n-`F
+4\n\
+\0jp
+*,Aq
+H\"{m\
+?kKY\
+\rZ!\
+`/+\
+h6:\
+ZP\r
+:Qf*W
+	p	/\
+Z\"\
+H\\2
+t:wi
+IY:Q
+Y[=;M
+xqs\
+ouhvm
+`h\0\0
+-l{{
+\\%d~
+0$\0d
+CXk<
+\\a\08\
+1{F@&\
+8sk2F5
+IO[\
+\0\Z\\
+\0	moI
+O\\\
+|-!-
+k29~S,
+W=&\
+#-\"\
+(#\n:\
+]N\\
++a\r
+8QU\
+KWM&\
+^sB\
+k[4p@\
+4|%\
+;8+\
+\Z\'i
+S0\\\
+DZgy=
+l{H#
+rTI-
+}>B\
+yV\r
+ \ZU
+0mZc\
+\r]a
+~\nr9/
++	y2\n
+k@Q#
+^\0J\
+(\'\"
+|x8P\
+@\Z0{p
+Qf&\
+688yLNN\
+>ch\
+piv\0U
+\00P
+@\\\
+W1W>\
+i s\
+J[O3
+2+LD\
+]-^P
+\\ZU\
+\"mL
+G\n\
+z`/I\
+\0:\
+6H\\\\\
+iO^\
+RGtX\
+ih4\
+N8=YX\
+	}Tn
+!fuN
+H[#M^\nJWo
+YOh?u
+3?I\
+s\\k
+\Z\n
+p%Q\
+)w?N
+4M-w
+\\yR\r*7
+diN\
+P\Z,\
+lM\'
+B:CIgJ\r\
+gLm\
+\'(\
+W-\'
+$f-3C
+.vy[\
+89M?
+k;Z\
+gG($
+kqHsE
+)-,^
+,$.\
+v8W\
+k?iT
+briZ
+OZ)Z\
+\nrF
+\"ER\
+C$2<8Qi
++%)\
+[\\n
+k\\(
+i>I}
+^@\0\
+\r/N- 
+x\\\
+|O,\
+vWO\
+:/Vl
+&:{p\
+@\"\
+\\\0\
+?[6\'
+dc$\
+\nFg0_
+\"F=\
+XbwU
+l!;Q\
+*>rVs
+%\rF\
+_tP\
+9V`\
+|U+\
+Hv).^o
+)\rFE
+3Wu\
+^Hs(
+%Ic\
+k2YK\
+e\0\
+Wco	
+xK=\
+}e-#\
+\r\'w(\
+yZs4R
+gfr>\
+}*\\T
+	[zx\
+O\"\
+\r{D9\
+\0Nt
+#^k^\
+	vB\nkR\
+0!v;.$4\
+qxXZ
+n-G?\
+`VU\
+\0&7
+i2a\
+\n p!
+\0qT
+]+Ec-
+T\'T\
+2U,~
+96WL\
+0S\r
+dI1\
+\n,=F
+yNkY
+a\'\
+O%c\
+\03JEwh_7
+)\ri6
+3Ln\
+hq?t
+OYN$\Zw(\
+wxJ\
+$2H]
+\0O\
+H@K>E
+sKZV
+6IFi\
+\n35
+\0ag<
+q,m&t
+1\\w\\
+[1\Z\
+D\':
+yIB6J>\
+`\0;\
+\'x@
+gznuc
+=\'@\
+<\rqh\
+\0\0;(
+YvA\
++^&\
+q:y\
+\0O\
+x\\\
+C\\\
+m\rW
+FH!3
++NZQ
+\0Txv\
+D\'\
+\'Jv
+34/\
+_G	\r\
+xMQk1
+_\\\
+n~Uq!kKG\
+#\nt
+i%G\
+\"5\
+Rr9C
+\Z_c\
+s5,V7
+\nq\
+OB\r
+2 \Z
+i\"d
+B=66
+y4NJCOf1I\
+#.$\
+$:m\
+VI\ri
+	$\0
+:\'P
+TYy\
+T-/$ZTB-h
+MmYS
+oD^U
+_B:| 
+[e>~K(\
+pQ#\
+689\
+%5l\
+\'/;
+\Z+\
+Rw=\
+\0\0
+8\\\
+WW>#*\
+?P1\
+I+^,k\
+I#nC
+#\rkZ\Z
+@^\\/
+O*f{
+;9S\'
+^Y0~
+O\0\
+M|\'\0\
++Z\'
+,d*=
+L\rf
+~VD\
+\0Ih
+:Zv=CMYM2A\
+V6u<
+;S-i
+$p)g
+M 9\
+C;e`6
+a=B(
+F@;B
+\Z@V
+@\r\
+U\no
+y\\gum
+rd^x\
+;#dq\
+.`pq
+;ZH\
+C]F\
++]I\
+8@|;M
+\0	b\
+e)<v\r\n
+in\n\
+~{\"
+o\'\
+\'J3\
+?`Qn
+XOb\n|\
+C\n4
+\\6\
+q\0\
+-vJWP\
+3H-c
+:$Z\'
+v\Zl
+$m*\
+\09C.
+MChvJ6
+JZMA
+7LCh0qK?Q(`4xN\
+ch9`\
+\"Nw]
+P\"p;
+o\0\
+>h\\\
+loHn
+#-ME
+AtX\
+!\0\
+=U-4
+rm]\
+=mC 
+-<q\
+=7X0
+F\'oeG]
+\'<VU]%\
+\Z\\O\nt\
+I}%f
++;Y\
+n9W\
+<	AX
+9Zu\
+]&Uw!\
+MdxE\
+\\h?Rl\
+A#l+
+8G&\
+I-Q;	
+u-;-
+7{Zl
+!\\yF\"
+<kHX
+\'8U
+k\0n\
+s!<m
+vF^\
+\0rq
+`/E\'O
+v+.\r
+\r\r\
+Lb]\
+@#*y
+Ekh-
+uRr\'6
+<RTH
+kNJK
+hZDO{	
+yZw\
+}	\rv
+b\'s\
+r_Cq
+\n9M
+4\Z\
+!sou}
+:T\'I\
+FVd\
+se\"XI
+:-{\r
+\r#\
+_XK\
+^kop
+\'\rh
+gs51
+\\]\
+Cp Z8
+T\ZRF
+$\\\
+\Z#\
+?ZO}
+_tG:
+cpls
+P\\}sy
+SNE\
+@vJO!
+_ya\
+p6,Q^^x_
+sI}XG\
+Da>WE%
+ilr{
+dm`\
+$7tRZ
+\Z\nY
+^yL\
+\Zi4
+*F\0
+\0O\
+2r\Z\
+#E\r
+E\"{f,
+I@sA
+\rs@ \
+guw:
+kNc^H
+4Cq^
+4U@.5J
+{\\2
+l5V&
+s\\\r
+({\r
+in\n
+48W\
+}s&c.
+W#5S
+unys
+^}*H\r
+>U]]
+Hc%_ as\Zp\0
+u?F!
+Zzmn
+[\\(
+mZ(o
+k\Z\0\
+A/q\
+2QT.
+A\n\
+pUqd
+pi\"\
+\0_\
+)\0\
+qIH\
+m35\
+\n~\
+i#~6
+7p[s\
+0L\r
+22V&
+{\'\
+\08Ga\
+SEkZ\
+iz)	j@\
+4UF\
+;[$e\
+x\'\
+|ZZv
+^\n\
+[e]\
+-\r+
+FJr\"
+J\'\
+{\\\
+8\r\
+Jr$V2\
+\0\0|
+Q<*\
+S@4y r
+{\\\r
+0\r.
+MdF\'\
+:c.;\
+VmN/!i 
+uj6\
+[<?K\
+!?Q$
+\'W\
+\Zc_Js
+K7XZ
+Mv@O
+g+i\
+:\\p
+e0GuB
+Wm\n
+\\)4\
+lP?\
+E-rSq
+)fI\
+\'\n
+<.f\
+a\Z7X
+xQ(>\
+#\'\
+\0P\
+\"/p
+X\\\
+\ZIJ\
+3]!dN>
+ZV7\
+|YM3R
+X$wFy\
+V\r\
+oi.\
+{\nA
+;\rA
+\\s}
+PqD\
+yML%\
+M;nf
+Q#S\
+(a2\
+9@y\0\"8\
+\r(!
+?Uv^C\
+7T\r}
+r|-^
+)\'3R
+P{E%
+4\n`:\
+6k>QA
+*=\'L`n
+*CN\
+7i \
+vLExEl~\
+B1B\
+ai>9=
+\ZZ\
+w\r	\
+i<e\nM+
+N\0\
+  at
++o-u
+ZmCaq\
++B7ac
+@1eeF
+(pvRe
+<e(e\
+.y[=9
+;[A)
+)Z SpV
+o,;\
+j\r;\Z\
+&s96
+R\rQ\
+\n6n 
+I=M\
+0V=u
+FlH\
+HA#\
+\\I%
+DsE\
+\02\
+NZk\
+{y%\
+`u=8\
+P;P\
+\'F\
+s\" Y
+V?Y\
+if-\
+HwP\
+0Q\"
+cp4\
+zy\'
+yr,{
+\0K\
+\\t\
+&R,yUv
+E\r=
+COum
+\"mQI\
+MZ \n\
+9U-W
+{%D`
+K,\ZU\
+I)i4
+%\Z\
+RBA\
+oo)w\
+\0k)\
+pMw]T\
+7O;\
+7&\'
+s\Z\
+${NBBM8\
+\rKGkEs@\'
+Oe2;
+VrJ4
+[\"H
+j\0\
+#-\0Q7\
+\Zb\
+N\"s
+=){\
+*j^\
+sI\0
+|	YS{
+4:FI
+\\,`\
+;(\n\
+{tr\
+Oj)B\
+u=;\
+7F\n~
+~\nRX\
+	ZJT=T
+dh\'\
+16F\
+_WgS\
+_%^\
+]\0\'
+>S&<
+;R^H\
+\\h-y
+\0^RW
+yYnk\
+Xm\Z
+J;\\=v
+\0d;\
+88(^
+Vp/ 
++\r8X\
+s#n\
+.n\rmD\
+hL\n
+)s \
+hR\Z
+(\\TZ
+q%+B
+s\"`
+\rU\
+ZQVU
+F\"\
+Ae-	\"\
+\'V]+
+>\Z@
+M;Nk
+JuzgO=`
+4I}\
+qJY;$\
+Z\"O1\
+{\\?
+rJSS
+NO\rHIIO#YvR
+u\"\
+90MN
+pj{\
+Hi^zG\
++9q\
+:\\\Z\
+TRY/
+Km<\
+;mP\
+V\0\n
+ua6K
+k?i(p\
+2^F\
+2I&\
+-kDd
+m$\Z\\\
+a- w
+}e\nG
+$\Z 
++$~\
+\"zlh
+wRdDY&\
+%Z`\
+q\\.
+U.T\
+\Z*\r\
+*FBR
+\r9R\
+Ke`sK\
+?r>C
+*>w\
+6Of\
+pmqR@
+R0U\nF
+(249#\
+M\'\
+\r\\Z
+Cd)\
+\0Oc
+>3R0
+\0y\
+\nfZ
+wJK!&
+\nd$\
+9Z:M
+002I
+w)-L\
+\ZZ;
+]_?e\
+6]}%
+s=6g
+\0$\
+HQXW
+iqVi\'\
+M\nDk
+\'3\
+h 8,\raoR\
+vFkh\
+7?y\"
+Zh	\
+@cg\
+iun:y
+X wK6\
+\0\n\
+dd;o
+\0P\
+5\'\
+\0-y
+wUS\
+^(_<
+|zX#\
+#d\r4
+U(	PB
+\\0\
+\'6\
+22Ew
+c:\"\
+hOf\
+\nJ>-
+O	M\
+wQav
+\Z=>
+Rf)\
+	 n=
+=\nn
+\0p\
+o-\0
+O\rq)m
+5-w\
+Q=WP
+/$x8N\
+\Zy\0
+;4k\
+z\'Q\
+@m^\
+@}_+9
+NI=\
+\\|\'z
+9QW R
+Q8]d
+7\\^|
+A&[+O
+oIf\
+KI|\'\
+rZ4}[K3l
+Yvr7\
+NO(\
+d\"\
+Y]GO
+ehQ<
+<-\r,
+Wk?k
+8| G\
+F\rsdq
+\Z2m?\
+FI\0R
+A?e<
+lgH.\
+l\ZM\
+Fcp=
+\0p9m%
+T.\\
+t[\\
+yR^\
+a+xU
+}\\:fJ
+|bF4\
+DyT8[
+{\\H
+JUw\
+-0H*
+FpTp@.\
+l<a.\
+F[t\
+K<sB\
+J\0\
+Dty\
+hu]\
+X!g\
+6T_\n\
+A3{U
+>^P]\"Z
+K:ES
+\Z%\\
+\Z+\
+bqy$2{
+Qx*_\
+U/(5
+qU%P
+36Wo3\
+<H\n
+.n0U
+f\'r
+u=U\
+3f[|
+F%.\
+d\ri
+0t{%f~B
+^\ZI
+`\r_c\
+\\Z\
+{/.\
+C_%}!wQ\
+	=}C\
+\Zx4\
+6|y^
+f{#,
+}	}-
+;9_db0\
+[Mvr!\
+MBcQ
+-Eer</
+:3!04
+>\0&
+(dQK
+@,[H
+Cvi:
+!$dp
+!\n\
+]D8Q
+\0M-
+d4f6\
+-\r;O*\
+\\\\|
+\\	g
+W|t\
+U\"4
+!%-\
+qF*P
+,\ZfI<Q
+vI3E
+]kK40
+ln.\
+u]lZM
+Z(~O\
+K<K3\
+a?H4\
+5DS_
+!\ri
+FHX\r
+C.m`\
+n0~\
+]#Z	
+\rk\
+~)!>
+^	8\
+N~/\
+;\'?
+Cc}U
+\"sE
+\\q\
+2X2\
+\0Un
+QVU\
+\086
+. w(
+r-3\
+uHH`
+Iqi\r
+\0j\
+\ZV\
+E+Ak\
+i%8i\
+\'a\
+j\Z\
+	}C\
+atN~\
+:I%\
+c=G\
+D	sC\
+T@Gu
+-Ic\
+%(&F\
+swxB|N
+`Vtv
+\\X-K\'
+v:7\
+w}\\
+k\\NmQ
+yHig8>
+N\rqq
+\0O\
+4{i\'
+Zc=&[
+WJ{\
+<\Z\'\
+4]:I
+fm?)
+{|a)5\"
+\"E\
+8\'\
+c~C\
+X[e\
+8\'\
+Md\':
+{^Bj04
+\ZVF74
+A	Jeu28K
+=rN\
+7	c\
+dwOI
+,Vo*2I\
+\0M5
+sly\
+\0N\
+g?{Mp
+aJl\
+\Z2Q
+\'% 3_
+=Vmh
+v)NP
+5EM5
+\r 1
+P7q\
+ORBn\
+$sX\
+UUyL
+B\"\
+|R,=d\
+4uYTsHD
+P[c\
+AnUc
+vO?BX
+;N\0\'
+UrTR
+-p\0\
+%ehNH,\
+k\0%
+=n\'@t\
+2\'47.\
+4Sgj
+)ET+#
+K	v\
+Z6Z]
+h\'\
+k\Z\
+Jj[.
+\Z1tG\
+L1NAo
+Y!m\
+x\\\
+\Z\Z
+:{Alf\
+\nT/
+e`@6
+\'#k
+S\'U*
+=\'^T\
+\0i3E\
+\n)J0
+K\Zp
+z\"0n
+5d9\
+bMM9\
+p9t\
+2;.\
+!\'|
+Dx+\
+\r@\
+D{O\
+nq\rn
+dasI\n\
+P\\\
+{@q&
+E/&#x
+S|\rX2\
+\"qh
+\0)\
+\0]\
+i>W>
+myY\
+\"v\
+_Pcf\
+N\n\
+E8Jqd%
+9SMG7
+(.f\
+?U3b`u
+Kt2Oe
+SZvz
+\0\n\
+SqGu
+QG\\
+\rb\
+.eD\
+j4mc
+][#\
+P_+\\&f
+<ey\
+cw)\
+,a)*-
+N\Z@ 
+sZc\0
+Xz}K9k
+>7B*2
+<\'!\
+yAl\
+ckX\
+\Z-=
+q+@$y	M- \
+@\0~
+\nMR
+Vsh*\
+\ZA$
+\n<!\
+\'^\Z\
+\n#fi\
+8OJD
+/;@\
+a}9\
+DX@q>{
+4\'A?
+H[#h
+S(o	Z\n
+N\".
+L{\'{]
+\n.F
+,5Ua
+!>,6
+]egzDj
+\0k@F
+>RX\
+K\"$
+\n\\
+u`^2
+\"Gd\
+gE?\
+x+R(D
+md&4
+\r8\
+cI\r
+{\0v\
+0\00
+\')K1X
+8A/\
+?!\Z+9
+!\Z4F
+j[\\
+K\\\
+~UH 
+\rx]
+AE\')
+AR_l
+E\'t
+H89Z
+ lf\
+\'\Z
+b	\\
+KZMsJ
+\rv\
+OR	]
+u].!_6\
+57Q\
+5\Z\
+@sc4\
+B\r\n
+H(P\
+%Gd`
+daOQI\
+m}$\
+7v,\
+	\0\
+;\"%
+mxDc\
+	%8\
+\ZpkM
+rQn\
+DkI8
+vDdv\
+h\03\
+hXLM
+>PrM*8
+RgSNTO+
+m)!\
+)\r\
+CUdh1\
+)8i7XKA#`
+B>M\
+	 )\
+\n	\
+D\n)@
+tFL\
+K5dx>
+b9Lq
+\0u%
+RrfE
+MeF\
+OdR^
+w\\J\
+\0\n
+\"h\0
+\r*$j
+\\WvA
+8w\n\
+Cw	*y
+*9+\0d|*\
+a#Im
+C{siP
+q\r\
+kCv9
+i5\rs
+G<g\
+(r\n\
+[(p\
+<\"h\
+([`\02
+pRR\
+g$%u
+Ep< L\
+F\\\
+\n41
+\ZZ\
+lp5`&(<\
+i\\\
+\0KI
+\Z&4
+\n9\
+T,\r\
+Gt\"
+<zM9
+3K\0
+\0ScE4n
+hp7\
+l\08U
+$\Z#
+\0\'\
+6\nj&\
+yu{H\
+Nx0ql
+\r\"
+3Mr[@
+Pn\\{
+v3i-*cg
+PFr<\"
+,\ru\n~B
+s\0-
++m]}\
+@	ZM
+R\\UH
+pm`\
+UV\0
+QjBT.
+ep\\
+UH8\\
+%Ba$\
+Uq\\S
+#AQx\\
+U\rB
+|(\"\
+2HWw
+m+\r-\
+R9@x\
+u8I\
+;,h-
+R)4\
+PU~IJGN\
+\0oym\
+G%+8
+P&hkI
+@\0Z
+$(\r
+ryMKk
+EQyJBc\
+nBrqI)
+\'%gq
+hyIO
+\0q#\
+\ZKg
+Gd)&7C
+M=1\
+\Z8\
+7aQ\
+j9=m
+\Z{\
+/qq&\
+j0\ZM
+\04H
+r\r\
+Z#}\
+\r3\
+840S
+?Jx/
+	\"\
+\n7mv\
+/i$\
+$p9N\
+-\Zn\\T.
+aE.#
+wPyH
+\\mweRp
+\niP
+hv\n
+E<eP\
+\0#\
+	`KxV\
+Ap&\
+8^?\
+;NxO1\
+N\"\
+\nV5
+0Zh\
+\r.f\
+tJ\'*
+\\*\
+E<U\
+&\Z1
+20i\
+O\nD}\
+49T)y
+[Q$cn
+y	bK\
+\0h\0q\
+igE)
+J\' \
+Ln8\
+0P=\
+E\r\
+pE\rd
+7\n\
+| ;k\\/
+ncm`
+W\"\Zh(\
+D\n;(n
+\0G\
+8N0\
+L7*<
+p-Vy\
+8)pC
+EwV\
+CvZ\0\
+ wW3
+J}0\
+BB\ZA\
+|xW<\
+#hh\
+}u)|P>\
+\0>U
+oi`=
+sYNy
+U#@\
+_	hfq
+x6L[
+MQv)V
+<\"\ZWZ
+U7jB
+a%r\
+\nmwe
+BTw]\
+wta&\
+\ZNP
+\nASk
++X\\\Z
+.<\0
+\ZB\r
+XU!q
+Dv\n
+LPUd
+a1Nb$[I
+C `\
+	gM_d
+o	c!qP\
+K^7\
+HU\0
+\0\\	#
+*+s\
+\Z+X
+\'\n
+I\0T
+\05\
+q~\\\
+Lli4
+\'\n\
+dw\0M
+[\'4	\
+VFny\0\
+-nrit,
+*%j+
+tguZ$
+<!z[\
+{yU%-
+\03;lg
+\r?R7
+@{};#>\r
+n\"\
+6\0(
+r\0\"$sxBh
+}\\*zE
+[\ZC
+XgL\
+S3X\
+w<| \
+\rs\\\
+\nc\
+!\n\'
+UHzn
+-ii\
+|>~\
+9BmO\
+aOS\
+MZ4 d
+\npB
+Ni)\
+PyN\
+\0%%k\
+]DmsD
+\\>U*
+gMBq
+?\rS
+Ma\r\
+7\00
+7~Bi
+\'7\
+YqO\
+y5S\
+\rkG$
+FgD\
+0gp\
+7\0\
+\\h\
+\"<\
+t\rr
+o\0 
+Cx\rhp7i
+jnuv
+o_\0\
+h?t*
+B\Z\
+\0mnm
+]vZs
+UpRa
+sKy4@+^!\
+#Z3c
+=xU\
+$\"\
+\\\\
+<%\"v\
+G*?K
+i$X*K\
+q-`\
+ZOeWu
+O\n\
+2{\r
+# Time: 2025-06-11T05:01:28.450692Z
+# User@Host: isuconp[isuconp] @ localhost [127.0.0.1]  Id: 17497
+# Query_time: 0.000054  Lock_time: 0.000000 Rows_sent: 0  Rows_examined: 0
+SET timestamp=1749618088\G
