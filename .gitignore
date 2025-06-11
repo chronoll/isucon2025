@@ -16,3 +16,8 @@ portal/tmp
 !/portal/log/.keep
 /portal/tmp
 .vagrant
+
+alp
+alp.sh
+alp_linux_amd64.tar.gz
+query.sh
