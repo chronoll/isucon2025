@@ -157,4 +157,7 @@ watch-service-log:
 
 .PHONY: deploy
 deploy: get-conf
+	sudo rm -rf /var/log/nginx/access.log
+	sudo touch /var/log/nginx/access.log
+	sudo nginx -s reopen
 	curl https://xnvvb925bl.execute-api.ap-northeast-1.amazonaws.com/
