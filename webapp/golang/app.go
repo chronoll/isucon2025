@@ -172,54 +172,93 @@ func getFlash(w http.ResponseWriter, r *http.Request, key string) string {
 }
 
 func makePosts(results []Post, csrfToken string, allComments bool) ([]Post, error) {
-	var posts []Post
+    if len(results) == 0 {
+        return []Post{}, nil
+    }
 
-	for _, p := range results {
-		err := db.Get(&p.CommentCount, "SELECT COUNT(*) AS `count` FROM `comments` WHERE `post_id` = ?", p.ID)
-		if err != nil {
-			return nil, err
-		}
+    // 投稿IDのスライスを作成
+    postIDs := make([]int, 0, len(results))
+    for _, p := range results {
+        postIDs = append(postIDs, p.ID)
+    }
 
-		query := "SELECT * FROM `comments` WHERE `post_id` = ? ORDER BY `created_at` DESC"
-		if !allComments {
-			query += " LIMIT 3"
-		}
-		var comments []Comment
-		err = db.Select(&comments, query, p.ID)
-		if err != nil {
-			return nil, err
-		}
+    // IN句でコメントをまとめて取得
+    // sqlx.In を使うとIN句のプレースホルダ展開を安全に行える
+    query, args, err := sqlx.In("SELECT * FROM `comments` WHERE `post_id` IN (?) ORDER BY `created_at` DESC", postIDs)
+    if err != nil {
+        return nil, err
+    }
+    
+    allCommentsData := []Comment{}
+    err = db.Select(&allCommentsData, query, args...)
+    if err != nil {
+        return nil, err
+    }
 
-		for i := 0; i < len(comments); i++ {
-			err := db.Get(&comments[i].User, "SELECT * FROM `users` WHERE `id` = ?", comments[i].UserID)
-			if err != nil {
-				return nil, err
-			}
-		}
+    // コメント投稿者のIDを重複なく収集
+    commentUserIDs := make(map[int]struct{})
+    for _, c := range allCommentsData {
+        commentUserIDs[c.UserID] = struct{}{}
+    }
 
-		// reverse
-		for i, j := 0, len(comments)-1; i < j; i, j = i+1, j-1 {
-			comments[i], comments[j] = comments[j], comments[i]
-		}
+    // コメント投稿者の情報をまとめて取得
+    usersByID := make(map[int]User)
+    if len(commentUserIDs) > 0 {
+        userIDs := make([]int, 0, len(commentUserIDs))
+        for id := range commentUserIDs {
+            userIDs = append(userIDs, id)
+        }
+        
+        query, args, err := sqlx.In("SELECT * FROM `users` WHERE `id` IN (?)", userIDs)
+        if err != nil {
+            return nil, err
+        }
+        
+        commentUsers := []User{}
+        err = db.Select(&commentUsers, query, args...)
+        if err != nil {
+            return nil, err
+        }
 
-		p.Comments = comments
+        for _, u := range commentUsers {
+            usersByID[u.ID] = u
+        }
+    }
 
-		err = db.Get(&p.User, "SELECT * FROM `users` WHERE `id` = ?", p.UserID)
-		if err != nil {
-			return nil, err
-		}
+    // 投稿ごとにコメントとユーザー情報を紐付け
+    commentsByPostID := make(map[int][]Comment)
+    for _, c := range allCommentsData {
+        // コメントにユーザー情報を付与
+        c.User = usersByID[c.UserID]
+        commentsByPostID[c.PostID] = append(commentsByPostID[c.PostID], c)
+    }
 
-		p.CSRFToken = csrfToken
+    // 最終的なPostスライスを作成
+    posts := make([]Post, 0, len(results))
+    for _, p := range results {
+        // resultsには既にJOIN済みの投稿者情報(p.User)が入っている
+        p.CSRFToken = csrfToken
+        
+        comments := commentsByPostID[p.ID]
+        p.CommentCount = len(comments)
 
-		if p.User.DelFlg == 0 {
-			posts = append(posts, p)
-		}
-		if len(posts) >= postsPerPage {
-			break
-		}
-	}
+        // allComments=false の場合は3件に絞る
+        if !allComments && len(comments) > 3 {
+             // DESCで取得しているので末尾3件が最新
+            p.Comments = comments[len(comments)-3:]
+        } else {
+            p.Comments = comments
+        }
+        
+        // 元コードのreverse処理を再現
+        for i, j := 0, len(p.Comments)-1; i < j; i, j = i+1, j-1 {
+            p.Comments[i], p.Comments[j] = p.Comments[j], p.Comments[i]
+        }
 
-	return posts, nil
+        posts = append(posts, p)
+    }
+
+    return posts, nil
 }
 
 func imageURL(p Post) string {
@@ -382,37 +421,54 @@ func getLogout(w http.ResponseWriter, r *http.Request) {
 }
 
 func getIndex(w http.ResponseWriter, r *http.Request) {
-	me := getSessionUser(r)
+    me := getSessionUser(r)
 
-	results := []Post{}
+    results := []Post{}
+    // 投稿と投稿者情報をJOINして一括で取得するクエリ
+    query := `
+        SELECT
+            p.id, p.user_id, p.body, p.mime, p.created_at,
+            u.id AS "user.id",
+            u.account_name AS "user.account_name",
+            u.passhash AS "user.passhash",
+            u.authority AS "user.authority",
+            u.del_flg AS "user.del_flg",
+            u.created_at AS "user.created_at"
+        FROM posts AS p
+        JOIN users AS u ON p.user_id = u.id
+        WHERE u.del_flg = 0
+        ORDER BY p.created_at DESC
+        LIMIT 20`
+    
+    // err := db.Select(&results, "SELECT `id`, `user_id`, `body`, `mime`, `created_at` FROM `posts` ORDER BY `created_at` DESC")
+    err := db.Select(&results, query) // クエリを差し替え
+    if err != nil {
+        log.Print(err)
+        return
+    }
 
-	err := db.Select(&results, "SELECT `id`, `user_id`, `body`, `mime`, `created_at` FROM `posts` ORDER BY `created_at` DESC")
-	if err != nil {
-		log.Print(err)
-		return
-	}
+    // 修正後のmakePostsを呼び出す
+    posts, err := makePosts(results, getCSRFToken(r), false)
+    if err != nil {
+        log.Print(err)
+        return
+    }
 
-	posts, err := makePosts(results, getCSRFToken(r), false)
-	if err != nil {
-		log.Print(err)
-		return
-	}
+    fmap := template.FuncMap{
+        "imageURL": imageURL,
+    }
 
-	fmap := template.FuncMap{
-		"imageURL": imageURL,
-	}
-
-	template.Must(template.New("layout.html").Funcs(fmap).ParseFiles(
-		getTemplPath("layout.html"),
-		getTemplPath("index.html"),
-		getTemplPath("posts.html"),
-		getTemplPath("post.html"),
-	)).Execute(w, struct {
-		Posts     []Post
-		Me        User
-		CSRFToken string
-		Flash     string
-	}{posts, me, getCSRFToken(r), getFlash(w, r, "notice")})
+    template.Must(template.New("layout.html").Funcs(fmap).ParseFiles(
+        getTemplPath("layout.html"),
+        getTemplPath("index.html"),
+        getTemplPath("posts.html"),
+        getTemplPath("post.html"),
+    )).Execute(w, struct {
+        Posts     []Post
+        Me        User
+        CSRFToken string
+        Flash     string
+    }{posts, me, getCSRFToken(r), getFlash(w, r, "notice")})
 }
 
 func getAccountName(w http.ResponseWriter, r *http.Request) {
